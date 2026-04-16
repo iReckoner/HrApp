@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-gray-50 p-4 font-sans text-slate-800">
+  <header class="flex items-center mb-8">
+    <button class="p-2"><i class="fas fa-chevron-left text-xl"></i></button>
+    <h1 class="text-2xl font-bold ml-4">Leave History</h1>
+  </header>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold">
+      {{ currentMonth }}
+      <!-- {{ (selectedDate$ | async) | date:'MMMM yyyy' }} -->
+    </h2>
+
+    <div class="relative">
+      <input
+        type="month"
+        (change)="onMonthSelect($event)"
+        class="absolute inset-0 opacity-0 cursor-pointer"
+      />
+      <button class="bg-white border border-slate-200 px-4 py-2 rounded-full text-blue-600 shadow-sm hover:bg-slate-50 transition">
+        Select Month
+      </button>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+
+    <!-- <ng-container *ngIf="leaveData; else loading"> -->
+      @for (leave of leaveData; track leave.date) {
+      <!-- <div *ngFor="let leave of leaves"
+           class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 flex justify-between items-center"> -->
+           <div  class="bg-white p-5 rounded-2xl shadow-md border border-slate-100 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div class="bg-slate-800 p-3 rounded-lg text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-lg">{{ leave.type }}</h3>
+            <p class="text-slate-400 text-sm tracking-wide">
+              {{ leave.date }} · {{ leave.duration }} d
+            </p>
+          </div>
+        </div>
+
+        <span class="border border-orange-300 text-orange-400 px-4 py-1 rounded-xl text-lg font-medium">
+          {{ leave.status }}
+        </span>
+      </div>
+      }    @empty {
+          <p>No records found for this month.</p>
+        }
+
+      <!-- </div> -->
+    <!-- </ng-container> -->
+
+    <ng-template #loading>
+      <div class="text-center py-10 text-slate-400">Loading records...</div>
+    </ng-template>
+  </div>
+</div>

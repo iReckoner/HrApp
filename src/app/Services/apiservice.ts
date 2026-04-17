@@ -6,9 +6,9 @@ import { Observable ,of} from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://192.168.0.128:4130'; //local
+  // private apiUrl = 'http://192.168.0.128:4130'; //local
   //  private apiUrl = 'https://cloud.ireckoner.in:5000/api'; //staging
-      //  private apiUrl = 'https://cloud.ireckoner.in:4140'; //live
+       private apiUrl = 'https://cloud.ireckoner.in:4130'; //live
   // private apiUrl = 'https://c0320e7d265d.ngrok-free.app/api';
   private profileid='staging';
 

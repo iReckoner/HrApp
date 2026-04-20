@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "build:android": "ng build && npx cap sync android && cd android && (./gradlew assembleDebug || gradlew assembleDebug)",
+    "run:android": "npx cap run android",
+    "start:android": "npx cap run android --livereload",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:hrapp": "node dist/hrapp/server/server.mjs"

@@ -54,8 +54,13 @@ getDeviceId(): string {
 }
 
 onSubmit() {
-  console.log(this.email, this.otp);
-  this.logincheck(this.email);
+  if(this.showotp==true){
+    this.otpvalidate();
+  }else{
+    console.log(this.email, this.otp);
+    this.logincheck(this.email);
+  }
+
 }
 async logincheck(userid: string) {
 
@@ -111,7 +116,8 @@ async logincheck(userid: string) {
         // this.showPopup=true;
         // this.popupMessage='Please enter registered Email.'
         this.showotp=true;
-         this.sendEmail(); // send OTP
+         this.sendEmail();
+         this.cdr.detectChanges();// send OTP
       // this.router.navigate(['app/home'], { replaceUrl: true });
          return;
       }
@@ -170,5 +176,30 @@ async sendEmail() {
     console.warn('Email not found in localStorage');
   }
 }
+otpvalidate()
+{
+  let otpstore=localStorage.getItem('otp');
+  const email = localStorage.getItem('email');
+   if (this.otp == otpstore){
+    this.apiService.updateotp(email??"").subscribe((response)=>{
+      console.log('otp verified:', response);
+      this.apiService.getlogininfo(email??"").subscribe((infoResponse)=>{
 
+        const data = infoResponse;
+        console.log('Login Info:', data);
+
+        localStorage.setItem('Empid', data[0].data[0].EmployeeId.toString());
+        localStorage.setItem('EmpName', data[0].data[0].PartyName);
+        localStorage.setItem('CompanyId', data[0].data[0].CompanyId);
+
+        this.router.navigate(['app/home'], { replaceUrl: true });
+        return;
+
+
+      });
+    });
+   }else{
+
+   }
+}
 }

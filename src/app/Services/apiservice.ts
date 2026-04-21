@@ -98,13 +98,10 @@ export class ApiService {
   emailsent(email:string,otp:number):Observable<any>{
     try {
       const url = `${this.apiUrl}/mobile/sendemail?mail=${email}&otp=${otp}`;
-
       console.log(url);
-
       // const response = await firstValueFrom(
       //   this.http.get(url)
-      // );
-
+      // )
       return this.http.get(url);
 
     } catch (error) {
@@ -136,6 +133,20 @@ export class ApiService {
       'Content-Type': 'application/json'
     });
     return this.http.post(`${this.apiUrl}/${Queryname}?ProfileId=${this.profileid}&EmployeeId=${EmployeeId}&CompanyId=${CompanyId}&DocumentAction=1&DocGen=0`, data,{headers});
+  }
+  updateotp(email:string){
+    let deviceId = localStorage.getItem('deviceId');
+    const headers = new HttpHeaders({
+
+      'Content-Type': 'application/json'
+    });
+    const data={
+      'ProfileId':this.profileid,
+      'email':email,
+      'DeviceId': deviceId??"",
+    }
+    const url = `${this.apiUrl}/mobile/logindetail?ProfileId=${this.profileid}`;
+    return this.http.post(url, data, { headers });
   }
 
 

@@ -1,0 +1,54 @@
+<div class="flex flex-col h-screen bg-gray-50 text-slate-800 font-sans">
+
+  <header class="flex items-center justify-between p-4 bg-white">
+    <h1 class="text-2xl font-bold">Expenses</h1>
+    <!-- <div class="flex gap-4">
+      <button class="p-1"><span class="material-icons">notifications_none</span></button>
+      <button class="p-1"><span class="material-icons text-slate-700">account_circle</span></button>
+    </div> -->
+  </header>
+
+  <div class="flex bg-white">
+    <div class="flex-1 py-3 text-center border-b-2 border-transparent">
+      <span class="font-semibold text-lg">Expense Balance</span>
+    </div>
+    <div class="flex-1 py-3 text-center border-b-2 border-transparent">
+      <button (click)="goexpensehistory()" class="font-semibold text-lg underline decoration-2 underline-offset-8">view Expense History</button>
+     <!-- <button (click)="goexpensehistory()"> <span class="font-semibold text-lg underline decoration-2 underline-offset-8">View Expense History</span></button> -->
+    </div>
+  </div>
+
+  <main class="flex-1 p-6 space-y-8">
+
+    <div class="bg-blue-50 rounded-2xl p-10 flex flex-col items-center justify-center space-y-2">
+      <span class="text-blue-700 font-semibold text-lg">Total Expense</span>
+      <span class="text-blue-900 text-5xl font-bold">₹ 0.00</span>
+    </div>
+
+    <button class="w-full bg-[#1e293b] text-white py-4 rounded-xl text-lg font-semibold shadow-md active:scale-95 transition-transform">
+      Claim an Expense
+    </button>
+    <section>
+      <h2 class="text-2xl font-bold">Recent Expenses</h2>
+    </section>
+  </main>
+<!--
+  <nav class="flex justify-around items-center bg-white border-t py-3 pb-6">
+    <div class="flex flex-col items-center text-gray-400">
+      <span class="material-icons">home</span>
+      <span class="text-xs">Home</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <span class="material-icons">calendar_month</span>
+      <span class="text-xs">Leaves</span>
+    </div>
+    <div class="flex flex-col items-center text-blue-800">
+      <span class="material-icons">currency_rupee</span>
+      <span class="text-xs font-bold">Expenses</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <span class="material-icons">account_balance_wallet</span>
+      <span class="text-xs">Salary</span>
+    </div>
+  </nav> -->
+</div>

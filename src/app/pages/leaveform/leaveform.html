@@ -1,0 +1,128 @@
+<div class="w-full bg-white p-6 rounded-none shadow-none">
+
+  <!-- White Form Container -->
+  <div class="max-w-8xl mx-auto bg-white p-6 rounded-xl shadow-md">
+
+    <!-- Header -->
+    <div class="flex items-center mb-6 bg-gray-100 p-4 rounded-lg">
+      <button class="text-gray-600 mr-4" (click)="gotoleave()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <h1 class="text-xl font-bold text-gray-800">New Leave Application</h1>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+      <!-- Employee Id -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">Employee Id</label>
+        <input formControlName="employeeId"
+          class="w-full p-3 bg-white border-none rounded-lg shadow-sm text-gray-800">
+      </div>
+
+      <!-- Employee Name -->
+<div class="w-full block">
+  <label class="text-gray-600 text-sm block mb-1">Employee Name</label>
+  <input formControlName="employeeName"
+    class="w-full p-3 bg-white border-none rounded-lg shadow-sm text-gray-800">
+</div>
+
+      <!-- Leave Type -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">
+          Leave Type <span class="text-red-500">*</span>
+        </label>
+        <select formControlName="leaveType"
+          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm appearance-none text-gray-700">
+
+          <option value="" disabled>Select Type</option>
+
+          @for (item of alldetails; track item.LeaveId || $index) {
+            <option [value]="item.LeaveId">{{ item.LeaveName }}</option>
+          } @empty {
+            <option disabled>No leave types found</option>
+          }
+        </select>
+      </div>
+
+      <!-- Section Title -->
+      <h3 class="text-gray-800 font-bold pt-2">Dates & Reasons</h3>
+
+      <!-- From Date -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">
+          From Date <span class="text-red-500">*</span>
+        </label>
+        <input type="date" formControlName="fromDate"
+          (change)="calculateTotalDays()"
+          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm text-gray-700">
+      </div>
+
+      <!-- To Date -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">
+          To Date <span class="text-red-500">*</span>
+        </label>
+        <input type="date" formControlName="toDate"
+          (change)="calculateTotalDays()"
+          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm text-gray-700">
+      </div>
+
+      <!-- Day Type -->
+      <div class="flex justify-between items-center py-2">
+        <label class="flex items-center space-x-2">
+          <input type="radio" formControlName="dayType" value="Fullday"
+            (change)="calculateTotalDays()" class="w-4 h-4">
+          <span class="text-sm text-gray-600">Fullday</span>
+        </label>
+
+        <label class="flex items-center space-x-2">
+          <input type="radio" formControlName="dayType" value="Halfday"
+            (change)="calculateTotalDays()" 
+            [disabled]="disablePartialOptions"
+            class="w-4 h-4">
+          <span class="text-sm text-gray-600">Halfday</span>
+        </label>
+
+        <label class="flex items-center space-x-2">
+          <input type="radio" formControlName="dayType" value="Shortday"
+            (change)="calculateTotalDays()" 
+            [disabled]="disablePartialOptions"
+            class="w-4 h-4">
+          <span class="text-sm text-gray-600">Shortday</span>
+        </label>
+      </div>
+
+      <!-- Total Days -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">Total Leave Days</label>
+        <div class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-inner text-gray-700">
+          {{ totalDaysDisplay }}
+        </div>
+      </div>
+
+      <!-- Reason -->
+      <div>
+        <label class="text-gray-600 text-sm block mb-1">
+          Reasons <span class="text-red-500">*</span>
+        </label>
+        <textarea formControlName="reason" rows="4"
+          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm outline-none"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <div class="pt-4 pb-4">
+        <button type="submit" [disabled]="leaveForm.invalid"
+          class="w-full bg-[#1F618D] text-white py-3 rounded-lg flex justify-center items-center font-semibold disabled:opacity-50">
+          <span class="mr-2">➔</span> Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

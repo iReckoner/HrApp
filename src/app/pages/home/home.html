@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-slate-50 pb-20 font-sans">
+  <header class="flex items-center justify-between px-6 py-4 bg-white">
+    <h1 class="text-xl font-bold text-gray-800">Hii Aayushi Gupta</h1>
+    <div class="flex gap-4">
+      <button class="relative">
+        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </button>
+      <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+        <button (click)="goprofile()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex border-b bg-white">
+    <button class="flex-1 py-3 text-sm font-semibold text-indigo-700 border-b-2 border-indigo-700">Attendance</button>
+    <button class="flex-1 py-3 text-sm font-semibold text-gray-500">Feed</button>
+  </div>
+
+  <main class="p-4 space-y-6">
+    <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-8 text-center shadow-sm">
+      <div class="flex justify-center gap-2 mb-4">
+        <span class="text-xl">☁️</span><span class="text-xl">☀️</span><span class="text-xl">☁️</span>
+      </div>
+      <h2 class="text-lg font-bold text-gray-800 mb-6">General time 9:30 AM to 6:30 PM</h2>
+      <div class="flex gap-4">
+        <button (click)="saveAttendance('in')" class="flex-1 py-3 px-4 bg-white border border-gray-200 rounded-full text-indigo-600 font-medium shadow-sm active:scale-95 transition-all">Check In</button>
+        <button (click)="saveAttendance('out')" class="flex-1 py-3 px-4 bg-white border border-gray-200 rounded-full text-indigo-600 font-medium shadow-sm active:scale-95 transition-all">Check Out</button>
+      </div>
+    </div>
+
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+
+      <div class="flex items-center justify-between p-4 border-b">
+        <h2 class="text-lg font-bold text-gray-700">
+          {{ viewDate | date:'MMMM yyyy' }}
+        </h2>
+        <div class="flex gap-4">
+          <button (click)="changeMonth(-1)" class="p-1 hover:bg-gray-100 rounded text-gray-400 font-bold">&lt;</button>
+          <button (click)="changeMonth(1)" class="p-1 hover:bg-gray-100 rounded text-gray-400 font-bold">&gt;</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-7 border-l border-t border-gray-200">
+        @for (label of ['S','M','T','W','T','F','S']; track label) {
+          <div class="py-2 text-center text-xs font-semibold text-indigo-400 border-r border-b border-gray-200 bg-slate-50">
+            {{ label }}
+          </div>
+        }
+
+        @for (day of calendarDays; track day.date.getTime()) {
+          <div [ngClass]="{
+                 'bg-green-100': day.status === 'present',
+                 'bg-red-100': day.status === 'absent',
+                 'bg-gray-100': day.status === 'weekend',
+                 'bg-yellow-100': day.status === 'late',
+                 'bg-white': day.status === 'none'
+               }"
+               class="h-14 flex items-center justify-center border-r border-b border-gray-200 relative transition-all duration-200">
+
+            <span [ngClass]="{
+                    'text-blue-600': day.isToday,
+                    'text-gray-300': !day.isCurrentMonth,
+                    'text-gray-800': day.isCurrentMonth && !day.isToday
+                  }"
+                  class="text-sm font-bold">
+              {{ day.date.getDate() }}
+            </span>
+
+            @if (day.isToday) {
+               <div class="absolute top-1 right-1 w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- <div class="bg-white rounded-xl p-4 shadow-sm">
+      <div class="flex justify-between items-center mb-4 px-2">
+        <span class="font-semibold text-gray-700">March 2026 ▾</span>
+        <div class="flex gap-4 text-gray-400">
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-7 gap-1 text-center text-xs">
+        <div class="py-2 text-indigo-400 font-medium">M</div>
+        <div class="py-2 text-indigo-400 font-medium">T</div>
+        <div class="py-2 text-indigo-400 font-medium">W</div>
+        <div class="py-2 text-indigo-400 font-medium">T</div>
+        <div class="py-2 text-indigo-400 font-medium">F</div>
+        <div class="py-2 text-indigo-400 font-medium">S</div>
+        <div class="py-2 text-indigo-400 font-medium">S</div>
+
+        <div class="p-3 bg-red-100 text-red-400 rounded-sm">23</div>
+        <div class="p-3 bg-red-100 text-red-400 rounded-sm">24</div>
+        <div class="p-3 bg-green-100 text-green-600 rounded-sm">25</div>
+        <div class="p-3 bg-red-100 text-red-400 rounded-sm">26</div>
+        <div class="p-3 bg-green-100 text-green-600 rounded-sm">27</div>
+        <div class="p-3 bg-gray-200 text-gray-500">28</div>
+        <div class="p-3 bg-gray-200 text-gray-500 font-bold">1</div>
+
+        <div class="p-3 bg-red-100 text-red-400 font-bold">2</div>
+        <div class="p-3 bg-green-100 text-green-600 font-bold">3</div>
+        <div class="p-3 font-bold">4</div>
+        <div class="p-3 bg-red-100 text-red-400 font-bold">5</div>
+        <div class="p-3 bg-red-100 text-red-400 font-bold">6</div>
+        <div class="p-3 bg-green-100 text-green-600 font-bold">7</div>
+        <div class="p-3 bg-gray-200 text-gray-500">8</div>
+
+        </div>
+    </div> -->
+    
+   <button (click)=" attendancereprt()">
+    <div class="bg-white border border-gray-100 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="p-2 bg-indigo-50 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <span class="font-semibold text-gray-700">{{currentmonth}}</span>
+      </div>
+      <div class="px-4 py-1 border border-gray-300 rounded-full text-sm font-medium">
+        {{late}}
+      </div>
+    </div></button>
+  </main>
+
+  <div *ngIf="showPopup" class="fixed inset-0 flex items-center justify-center bg-gray-900/20 bg-opacity-40 z-50">
+
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 text-center animate-fadeIn">
+
+      <!-- Icon -->
+      <div
+        class="mx-auto flex items-center justify-center w-12 h-12 rounded-full mb-4"
+        [ngClass]="{
+          'bg-green-100': popupType === 'success',
+          'bg-red-100': popupType === 'error'
+        }"
+      >
+        <span
+          class="text-xl font-bold"
+          [ngClass]="{
+            'text-green-600': popupType === 'success',
+            'text-red-600': popupType === 'error'
+          }"
+        >
+          {{ popupType === 'success' ? '✓' : '!' }}
+        </span>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-lg font-semibold mb-2">
+        {{ popupType === 'success' ? 'Success' : 'Error' }}
+      </h2>
+
+      <!-- Message -->
+      <p class="text-gray-600 mb-5">
+        {{ popupMessage }}
+      </p>
+
+      <!-- Button -->
+      <button
+        (click)="closePopup()"
+        class="w-full py-2 rounded-lg text-white font-medium transition"
+        [ngClass]="{
+          'bg-green-600 hover:bg-green-700': popupType === 'success',
+          'bg-red-600 hover:bg-red-700': popupType === 'error'
+        }"
+      >
+        OK
+      </button>
+
+    </div>
+  </div>
+  <!-- <nav class="fixed bottom-0 w-full bg-white border-t flex justify-around py-3">
+    <div class="flex flex-col items-center text-indigo-700">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="text-[10px] mt-1">Home</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <span class="text-[10px] mt-1">Leaves</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <span class="text-xl font-bold">₹</span>
+      <span class="text-[10px] mt-1">Expenses</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      <span class="text-[10px] mt-1">Salary</span>
+    </div>
+  </nav> -->
+</div>
+

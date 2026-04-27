@@ -1,0 +1,78 @@
+<div class="max-w-md mx-auto bg-white min-h-screen shadow-lg font-sans">
+  <div class="flex justify-between items-center p-4 border-b">
+    <h1 class="text-xl font-bold">Salary</h1>
+    <!-- <div class="flex gap-4">
+      <span class="p-2 bg-gray-100 rounded-full">🔔</span>
+      <span class="p-2 bg-gray-100 rounded-full">👤</span>
+    </div> -->
+  </div>
+<!--
+  <div class="flex border-b text-center text-sm font-medium text-gray-600">
+    <div class="flex-1 py-3 border-b-2 border-indigo-900 text-indigo-900 font-bold">Salary</div>
+    <div class="flex-1 py-3">Company</div>
+    <div class="flex-1 py-3">Policy</div>
+  </div> -->
+
+  <!-- <div class="p-6 flex justify-between items-center">
+    <h2 class="text-2xl font-bold text-gray-800">{{ salaryData?.month }} {{ salaryData?.year }}</h2>
+    <button class="px-4 py-2 bg-gray-50 border rounded-full text-sm font-semibold">Select Month</button>
+  </div> -->
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-bold">
+      {{ currentMonth }}
+      <!-- {{ (selectedDate$ | async) | date:'MMMM yyyy' }} -->
+    </h2>
+
+    <div class="relative">
+      <input
+        type="month"
+        (change)="onMonthSelect($event)"
+        class="absolute inset-0 opacity-0 cursor-pointer"
+      />
+       <button class="bg-white border border-slate-200 px-4 py-2 rounded-full text-blue-600 shadow-sm hover:bg-slate-50 transition">
+        Select Month
+      </button>
+    </div>
+  </div>
+
+  <div class="px-6 py-2">
+    <h3 class="text-lg font-bold text-center mb-4">Earnings</h3>
+   @for(item of addsalary;track item.label){
+    <div  class="flex justify-between py-2 text-sm">
+      <span class="text-green-600 font-semibold">{{ item.label }}</span>
+      <span class="font-mono text-gray-700">₹{{ item.amount  }}</span>
+    </div>
+   }
+
+
+    <div class="flex justify-between py-4 border-t mt-2">
+      <span class="font-bold text-lg">Total Earnings</span>
+        <span class="font-bold text-lg">₹{{totalearning}}</span>
+    </div>
+  </div>
+
+  <div class="px-6 py-2 mt-4">
+    <h3 class="text-lg font-bold text-center mb-4">Deductions</h3>
+    @for (item of deductsalary; track item.label) {
+    <div class="flex justify-between py-2 text-sm">
+      <span class="text-red-500 font-semibold">{{ item.label }}</span>
+      <span class="font-mono text-gray-700">-₹{{ item.amount  }}</span>
+    </div>
+  }
+    <div class="flex justify-between py-4 border-t mt-2">
+      <span class="font-bold text-lg">Total Deductions</span>
+      <span class="font-bold text-lg">-₹{{totaldeduction }}</span>
+    </div>
+  </div>
+
+  <div class="px-6 py-6 border-t flex justify-between items-center bg-gray-50 mt-4">
+    <span class="font-bold text-xl">Net Salary</span>
+     <span class="font-bold text-xl">₹{{ netsalary }}</span>
+  </div>
+
+  <!-- <div class="p-6">
+    <button class="w-full bg-slate-900 text-white py-4 rounded-lg font-bold text-lg">
+      Download Salary Slip
+    </button>
+  </div> -->
+</div>

@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-gray-50 pb-24 font-sans text-slate-900">
+
+  <header class="flex items-center justify-between p-6">
+    <h1 class="text-3xl font-bold">Leave</h1>
+    <div class="flex gap-4">
+      <button class="relative p-2"><i class="fa-regular fa-bell text-2xl"></i></button>
+      <button class="p-2"><i class="fa-regular fa-circle-user text-2xl"></i></button>
+    </div>
+  </header>
+
+  <section class="px-6 mb-8">
+    <div class="flex justify-between items-end mb-4">
+      <h2 class="text-xl font-bold">Leave Balance</h2>
+      <button (click)='goleavehistory()' class="text-slate-800 font-bold border-b-2 border-slate-800 text-lg">View Leave History</button>
+    </div>
+
+    <div class="flex overflow-x-auto gap-4 no-scrollbar pb-2">
+      @for (item of balances; track item.type) {
+        <div class="min-w-[140px] flex-1 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+          <div class="relative w-20 h-10 overflow-hidden mb-4">
+            <div class="absolute top-0 left-0 w-20 h-20 border-[10px] border-gray-100 rounded-full"></div>
+            <div class="absolute top-0 left-0 w-20 h-20 border-[10px] rounded-full border-t-transparent border-l-transparent -rotate-45"
+                 [class]="item.color"></div>
+          </div>
+
+          <p class="text-lg font-bold">{{ item.taken }}/{{ item.total }}</p>
+          <p class="text-sm text-slate-500 font-semibold leading-tight">{{ item.type }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <div class="px-6 mb-8">
+    <button class="w-full bg-[#34495E] text-white py-4 rounded-xl text-lg font-bold shadow-lg active:scale-95 transition" (click)="goleaveform()">
+      Request a Leave
+    </button>
+  </div>
+
+  <section class="px-6 mb-8">
+    <h2 class="text-xl font-extrabold mb-4">Recent Leaves</h2>
+
+    <div class="space-y-4">
+      @for (leave of recentLeaves; track leave.startDate) {
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-50 flex items-start justify-between">
+          <div class="flex gap-4">
+            <div class="bg-slate-100 p-3 rounded-xl text-slate-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19,4H18V2H16V4H8V2H6V4H5C3.89,4 3,4.9 3,6V20C3,21.1 3.89,22 5,22H19C20.1,22 21,21.1 21,20V6C21,4.9 20.1,4 19,4M19,20H5V10H19V20M19,8H5V6H19V8M7,12H9V14H7V12M11,12H13V14H11V12M15,12H17V14H15V12M7,16H9V18H7V16M11,16H13V18H11V16M15,16H17V18H15V16Z" /></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold">{{ leave.type }}</h3>
+              <p class="text-slate-500 font-medium">{{ leave.startDate }} to</p>
+              <p class="text-slate-500 font-medium">{{ leave.endDate }}</p>
+              <p class="text-slate-400 italic text-sm mt-1">{{ leave.reason }}</p>
+            </div>
+          </div>
+          <span class="border-2 border-yellow-400 text-yellow-500 px-4 py-1 rounded-2xl font-bold text-sm">
+            {{ leave.status }}
+          </span>
+        </div>
+      }
+    </div>
+    <!-- <div class="px-4 flex justify underline center between items-center ">
+      <button (click)=""> view All</button>
+    </div> -->
+  </section>
+
+  <section class="px-6 flex justify-between items-center">
+    <h2 class="text-xl font-extrabold">Upcoming Holidays</h2>
+    <button class="text-xl font-bold">View All</button>
+    <!-- <div class="space-y-4">
+      @for (leave of recentLeaves; track leave.startDate) {
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-50 flex items-start justify-between">
+          <div class="flex gap-4">
+            <div class="bg-slate-100 p-3 rounded-xl text-slate-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19,4H18V2H16V4H8V2H6V4H5C3.89,4 3,4.9 3,6V20C3,21.1 3.89,22 5,22H19C20.1,22 21,21.1 21,20V6C21,4.9 20.1,4 19,4M19,20H5V10H19V20M19,8H5V6H19V8M7,12H9V14H7V12M11,12H13V14H11V12M15,12H17V14H15V12M7,16H9V18H7V16M11,16H13V18H11V16M15,16H17V18H15V16Z" /></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold">{{ leave.type }}</h3>
+              <p class="text-slate-500 font-medium">{{ leave.startDate }} </p>
+            </div>
+          </div>
+        </div>
+      }
+    </div> -->
+  </section>
+
+  <!-- <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-4">
+    <div class="flex flex-col items-center text-gray-400">
+      <i class="fa-solid fa-house text-xl"></i>
+      <span class="text-xs mt-1">Home</span>
+    </div>
+    <div class="flex flex-col items-center text-indigo-600">
+      <i class="fa-solid fa-calendar-days text-xl"></i>
+      <span class="text-xs mt-1 font-bold">Leaves</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <i class="fa-solid fa-indian-rupee-sign text-xl"></i>
+      <span class="text-xs mt-1">Expenses</span>
+    </div>
+    <div class="flex flex-col items-center text-gray-400">
+      <i class="fa-solid fa-file-invoice-dollar text-xl"></i>
+      <span class="text-xs mt-1">Salary</span>
+    </div>
+  </nav> -->
+</div>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">hrapp</string>
+    <string name="title_activity_main">hrapp</string>
+    <string name="package_name">com.example.hrapp</string>
+    <string name="custom_url_scheme">com.example.hrapp</string>
+</resources>

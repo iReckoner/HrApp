@@ -38,15 +38,21 @@
           Leave Type <span class="text-red-500">*</span>
         </label>
         <select formControlName="leaveType"
-          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm appearance-none text-gray-700">
-
+          class="w-full p-3 bg-gray-100 border-none rounded-lg shadow-sm appearance-none text-gray-700"
+          [disabled]="loadingLeaveTypes">
+      
           <option value="" disabled>Select Type</option>
 
-          @for (item of alldetails; track item.LeaveId || $index) {
-            <option [value]="item.LeaveId">{{ item.LeaveName }}</option>
-          } @empty {
-            <option disabled>No leave types found</option>
-          }
+          <ng-container *ngIf="alldetails?.length; else noTypes">
+            <option *ngFor="let item of alldetails; trackBy: trackByLeaveId"
+                    [value]="item.LeaveId">{{ item.LeaveName }}</option>
+          </ng-container>
+
+          <ng-template #noTypes>
+            <option [disabled]="true">
+              {{ loadingLeaveTypes ? 'Loading leave types...' : 'No leave types found' }}
+            </option>
+          </ng-template>
         </select>
       </div>
 

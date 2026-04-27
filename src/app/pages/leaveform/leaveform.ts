@@ -1,19 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../Services/apiservice';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-leaveform',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './leaveform.html',
   styleUrl: './leaveform.css'
 })
 export class Leaveform implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private http: HttpClient) { }
 
   private fb = inject(FormBuilder);
   private location = inject(Location);
@@ -27,6 +28,7 @@ export class Leaveform implements OnInit {
   leaveForm!: FormGroup;
 
   alldetails: any[] = [];
+  loadingLeaveTypes: boolean = false;
 
   ngOnInit() {
     this.employeeId = localStorage.getItem('Empid') || '';
@@ -96,21 +98,6 @@ export class Leaveform implements OnInit {
     }
   }
 
-  //Old submit function, 
-  // onSubmit() {
-  //   if (this.leaveForm.valid) {
-  //     const payload = {
-  //       ...this.leaveForm.getRawValue(),
-  //       totalDays: this.totalDaysDisplay
-  //     };
-
-  //     console.log('Submitted Data:', payload);
-  //     // API call here
-  //   } else {
-  //     this.leaveForm.markAllAsTouched();
-  //   }
-  // }
-
   //making object in the format required by the API
   onSubmit() {
     if (!this.leaveForm.valid) {
@@ -121,9 +108,6 @@ export class Leaveform implements OnInit {
     const raw = this.leaveForm.getRawValue();
     const companyId = localStorage.getItem('CompanyId') || '00000082';
     const employeeId = Number(raw.employeeId) || 0;
-    //const docId = '30000082';
-    //const docType = '0000';
-    //const docNo = 0;
 
     // current date in YYYY-MM-DD format
     const curdate = new Date().toISOString().slice(0, 10);
@@ -185,35 +169,60 @@ export class Leaveform implements OnInit {
       }
     };
 
-    // console.log('Payload to send:', JSON.stringify(payload, null, 2));
+    console.log('Payload to send:', JSON.stringify(payload, null, 2));
     console.log('Payload to send:', payload);
 
     // API call
-    // this.apiService.save('mobile/saveLeave', payload)
-    //   .subscribe(res => console.log('Save response', res));
+    const profileId = 'staging';
+    const url = `${this.apiService.getApiUrl()}/mobile/LeaveApply?ProfileId=${profileId}&EmployeeId=${employeeId}&CompanyId=${companyId}&DocumentAction=1&DocGen=1`;
+    const deviceId = localStorage.getItem('deviceId') ?? '';
+    const headers = new HttpHeaders({
+      'DeviceId': deviceId,
+      'Content-Type': 'application/json'
+    });
+
+    this.http.post(url, payload, { headers }).subscribe({
+      next: (res) => {
+        console.log('Leave apply response', res);
+        // navigate back or give feedback
+        this.location.back();
+      },
+      error: (err) => {
+        console.error('Leave apply error', err);
+      }
+    });
   }
-
-  //##########################################################
-
-
-
+ 
   //back navigation button in form page
   gotoleave() {
     this.location.back();
   }
-  //API call to get leave types and map them to the dropdown
+  //leave type dropdown data fetching from API and mapping to form
   leavetypedata() {
     const queryName = 'mobile/getLeaveType';
     let employeeId = localStorage.getItem('Empid');
     let CompanyId = localStorage.getItem('CompanyId');
 
-    this.apiService.detail(queryName, employeeId ?? "", CompanyId ?? "").subscribe((response) => {
-      console.log("API RESPONSE:", response);
-      console.log("device id:", localStorage.getItem('deviceId'));
-      const apiData = response?.[0]?.data || [];
-      this.alldetails = apiData;
-      
-      console.log("Mapped Leave Types:", this.alldetails);
+    this.loadingLeaveTypes = true;
+    this.apiService.detail(queryName, employeeId ?? "", CompanyId ?? "").subscribe({
+      next: (response) => {
+        const apiData = response?.[0]?.data || [];
+        this.alldetails = apiData;
+        this.loadingLeaveTypes = false;
+        // ensure a clean selection if previously empty
+        this.leaveForm.get('leaveType')?.setValue(this.alldetails.length ? this.leaveForm.get('leaveType')?.value || '' : '');
+        console.log("Mapped Leave Types:", this.alldetails);
+      },
+      error: (err) => {
+        console.error('Leave type fetch error', err);
+        this.alldetails = [];
+        this.loadingLeaveTypes = false;
+      }
     });
   }
+
+  trackByLeaveId(index: number, item: any) {
+    return item?.LeaveId ?? index;
+  }
+
 }
